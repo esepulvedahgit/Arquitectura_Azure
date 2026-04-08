@@ -33,6 +33,7 @@ Laboratorio práctico que despliega una instancia de **Moodle 5.0.2** sobre infr
 
 ![Diagrama de arquitectura](./arquitectura.png)
 
+> Diagrama generado con Napkin AI. Representa los componentes desplegados y sus relaciones.
 
 ---
 
@@ -101,11 +102,13 @@ Laboratorio práctico que despliega una instancia de **Moodle 5.0.2** sobre infr
 ```
 On-premises Active Directory
     └── Usuarios: usertest01–usertest20
-    └── Grupos: grp-azure-admins, grp-azure-engineers, grp-azure-readers
           │
           ▼ Entra Connect (Password Hash Sync)
 Microsoft Entra ID (cloudlab.cl)
-          │
+    └── Grupos cloud-only: grp-azure-admins
+    └──                    grp-azure-engineers
+    └──                    grp-azure-readers
+          │  Membresía manual: usuarios sincronizados asignados a grupos cloud
           ▼ Azure RBAC
 Suscripción / Resource Group Moodle
 ```
@@ -114,9 +117,11 @@ Suscripción / Resource Group Moodle
 
 | Grupo | Origen | Rol ARM | Scope |
 |---|---|---|---|
-| `grp-azure-admins` | AD on-prem (sincronizado) | `Colaborador` | Suscripción |
-| `grp-azure-engineers` | AD on-prem (sincronizado) | `Colaborador` | RG `Moodle` |
-| `grp-azure-readers` | AD on-prem (sincronizado) | `Lector` | Suscripción |
+| `grp-azure-admins` | **Cloud-only (Entra ID)** | `Colaborador` | Suscripción |
+| `grp-azure-engineers` | **Cloud-only (Entra ID)** | `Colaborador` | RG `Moodle` |
+| `grp-azure-readers` | **Cloud-only (Entra ID)** | `Lector` | Suscripción |
+
+> **Nota:** Los grupos se crean y gestionan directamente en Entra ID. Los usuarios sincronizados desde AD on-prem se agregan manualmente como miembros de estos grupos cloud-only.
 
 ### 4.3 Managed Identity
 
@@ -172,9 +177,9 @@ Suscripción / Resource Group Moodle
 | Parámetro | Detalle |
 |---|---|
 | Instalación | Agente en `vm-moodle` |
-| Bouncer | Apache Bouncer |
-| Caso de uso | Protección contra fuerza bruta en login de Moodle |
-| Mecanismo | Bloqueo de IP tras intentos fallidos de autenticación |
+| Bouncer | **Firewall Bouncer (iptables/nftables)** |
+| Caso de uso | Protección contra fuerza bruta SSH |
+| Mecanismo | Bloqueo de IP a nivel firewall tras intentos fallidos de autenticación SSH |
 
 ---
 
