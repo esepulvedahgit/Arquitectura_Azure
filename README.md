@@ -33,7 +33,7 @@ Laboratorio práctico que despliega una instancia de **Moodle 5.0.2** sobre infr
 
 ![Diagrama de arquitectura](./arquitectura_azure.png)
 
-> Diagrama generado con Napkin AI. Representa los componentes desplegados y sus relaciones.
+
 
 ---
 
