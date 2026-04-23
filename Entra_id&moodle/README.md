@@ -1,5 +1,10 @@
 # Integración Moodle 5.0 con Microsoft Entra ID
-## Guía de Implementación Paso a Paso
+## Guía de Implementación 
+
+
+
+Arquitectura  Arquitctura_Entra_id_Moodle.png
+![Arquitectura](Arquitctura_Entra_id_Moodle.png)
 
 **LABCLOUDSOLUTIONS — cloudlab.cl | Versión 1.0 — Abril 2026**
 
